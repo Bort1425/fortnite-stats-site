@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, FormEvent } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
@@ -41,11 +41,20 @@ function App() {
   //}, []);
   console.log(apiData_Name); 
 
+  //Function that handles the username submittion form
+  function handleSubmit(submitEvent:FormEvent<HTMLFormElement>) {//SubmitEvent has the type of FormEvent <>--> annotation and inside is the type of the target
+    submitEvent.preventDefault();//.preventDefault stops the browser from refreshing
+    console.log(submitEvent);
+    const data = new FormData(submitEvent.currentTarget)//FormData is an object that takes in a formElement aka the submitEvent's current target
+    data.get('gamer-tag'); //look for an input with name of gamer tag
+    console.log(data.get);
+
+  }
 
   return (
     <>
       <h1>Fortnite <span className="Site-header-style">Stats</span> <span className="Site-header-style">Site</span></h1>
-      <form>
+      <form onSubmit={handleSubmit}>// When the form submits, call the handleSubmit function name
         <fieldset>
           <legend>Enter your Fortnite Username</legend>
           <input id="gamer-tag" type="text" name="gamer-tag" placeholder='Enter in your Fortnite gamertag here!'></input>
@@ -61,12 +70,14 @@ function App() {
             <h2 className='stat-type'>This will display the current stat type</h2>
             
           {/*This will be where the table goes for the stats*/}
+          {/*
           <table>
             <tr>
               <td></td>
               <td></td>
             </tr>
           </table>
+          */}
           </div>
 
         <img src='' alt=''></img>
