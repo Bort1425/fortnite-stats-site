@@ -5,7 +5,7 @@ import './App.css'
 
 function QueryFortniteAPI(){
   console.log("Juice")
-  fetch("https://fortnite-api.com/v2/stats/br/v2?name=N.Y.O",{ //fetch makes request to url to get the data
+  fetch("https://fortnite-api.com/v2/stats/br/v2?name=BleachDrinker77",{ //fetch makes request to url to get the data
     headers: {
       Authorization: import.meta.env.VITE_API_KEY //The authorization header is needed in order to have access to the api data. And by authorization i mean you need the API KEY to get access to the data
     }
@@ -24,30 +24,51 @@ function App() {
   */
   const [count, setCount] = useState(0)
   console.log(import.meta.env.VITE_API_KEY)//print out the api key
-  const pullData = async() => { // so frick all that promise ish, idk how that works, we're using async awaits, which just means it awaits stuff. Yeah good luck with that.
+  // const pullData = async() => { // so frick all that promise ish, idk how that works, we're using async awaits, which just means it awaits stuff. Yeah good luck with that.
 
-    const response = await fetch("https://fortnite-api.com/v2/stats/br/v2?name=N.Y.O",{ //fetch makes request to url to get the data. Stole this from above.
-        headers: {
-          Authorization: import.meta.env.VITE_API_KEY //The authorization header is needed in order to have access to the api data. And by authorization i mean you need the API KEY to get access to the data
-        }
-      });
-    const stats = await response.json(); //the idea here is we basically stack a bunch of awaits inside each other so they all complete in a row, and then you get the thing you want when they are all done yay.
-    setApiData(stats.data.account.name); //so remember that updater method we talked about? We use it here, once all the awaits resolve.
-    //by doing this, we set the state to the stats.data.account.name info we pulled, and then we'll use that in the html with string interpolation so that it updates when we click la button.
+  //   const response = await fetch("https://fortnite-api.com/v2/stats/br/v2?name=N.Y.O",{ //fetch makes request to url to get the data. Stole this from above.
+  //       headers: {
+  //         Authorization: import.meta.env.VITE_API_KEY //The authorization header is needed in order to have access to the api data. And by authorization i mean you need the API KEY to get access to the data
+  //       }
+  //     });
+  //   const stats = await response.json(); //the idea here is we basically stack a bunch of awaits inside each other so they all complete in a row, and then you get the thing you want when they are all done yay.
+  //   setApiData(stats.data.account.name); //so remember that updater method we talked about? We use it here, once all the awaits resolve.
+  //   //by doing this, we set the state to the stats.data.account.name info we pulled, and then we'll use that in the html with string interpolation so that it updates when we click la button.
 
-  };
+  // };
   //useEffect(() => { //uncomment this if you want to call on mount (basically from the start, instead of clicking the button)
   //  pullData();
   //}, []);
-  console.log(apiData_Name); 
+  //console.log(apiData_Name); 
+
+  async function fetchFortniteStats(gamerTag:string){ //async - no other code is allowed to run until this function does
+    let response = await fetch("https://fortnite-api.com/v2/stats/br/v2?name=" +  gamerTag,{ //fetch makes request to url to get the data
+      headers: {
+        Authorization: import.meta.env.VITE_API_KEY //The authorization header is needed in order to have access to the api data. And by authorization i mean you need the API KEY to get access to the data
+      }
+    })
+    let data = await response.json()
+    console.log(data);
+
+    
+  }
 
   //Function that handles the username submittion form
   function handleSubmit(submitEvent:FormEvent<HTMLFormElement>) {//SubmitEvent has the type of FormEvent <>--> annotation and inside is the type of the target
     submitEvent.preventDefault();//.preventDefault stops the browser from refreshing
     console.log(submitEvent);
     const data = new FormData(submitEvent.currentTarget)//FormData is an object that takes in a formElement aka the submitEvent's current target
-    data.get('gamer-tag'); //look for an input with name of gamer tag
-    console.log(data.get);
+    let gamerTag = data.get('gamer-tag'); //look for an input with name of gamer tag
+    console.log(gamerTag);
+
+
+    if((gamerTag == null) || (gamerTag == undefined)){
+      return 0;
+    }
+
+    fetchFortniteStats(gamerTag.toString());
+
+
 
   }
 
