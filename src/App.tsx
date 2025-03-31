@@ -29,16 +29,16 @@ type StatsProps = {//we say we have a new type called stats props and the name i
 function Stats(props: StatsProps) {
   return (
     <>
-    <p>Score: {props.data.score}</p>
-    <p>ScorePerMatch: {props.data.scorePerMatch}</p>
-    <p>Wins: {props.data.wins}</p>
-    <p>kills: {props.data.kills}</p>
-    <p>KillDeath Ratio: {props.data.kd}</p>
-    <p>KillsPerMatch: {props.data.killsPerMatch}</p>
-    <p>Matches: {props.data.matches}</p>
-    <p>winRate: {props.data.winRate}</p>
-    <p>minutesPlayed: {props.data.minutesPlayed}</p>
-    <p>playersOutlived: {props.data.playersOutlived}</p>
+      <p>Score: {props.data.score}</p>
+      <p>ScorePerMatch: {props.data.scorePerMatch}</p>
+      <p>Wins: {props.data.wins}</p>
+      <p>kills: {props.data.kills}</p>
+      <p>KillDeath Ratio: {props.data.kd}</p>
+      <p>KillsPerMatch: {props.data.killsPerMatch}</p>
+      <p>Matches: {props.data.matches}</p>
+      <p>winRate: {props.data.winRate}</p>
+      <p>minutesPlayed: {props.data.minutesPlayed}</p>
+      <p>playersOutlived: {props.data.playersOutlived}</p>
     </>
   )
 }
@@ -94,36 +94,41 @@ function App() {
     }
 
     fetchFortniteStats(gamerTag.toString());
-
-
-
   }
 
   return (
     <>
       <h1>Fortnite <span className="Site-header-style">Stats</span> <span className="Site-header-style">Site</span></h1>
-      <form onSubmit={handleSubmit}> /*When the form submits, call the handleSubmit function name*/
+      <form onSubmit={handleSubmit}> 
         <fieldset>
           <legend>Enter your Fortnite Username</legend>
           <input id="gamer-tag" type="text" name="gamer-tag" placeholder='Enter in your Fortnite gamertag here!'></input>
         </fieldset>
         <button type='submit'>Smash that submit button!</button>
       </form>
- 
+
       {apiData != null && <div>
         <section>
           <img src='' alt=''></img>
           <div className='stats-table'>
+
             <h1 className='stats-table-header'>{apiData?.data.account.name} Level: {apiData?.data.battlePass.level}</h1>
+
             <h2 className='stat-type-overall'>Overall</h2>
-            <Stats name="Overall" data={apiData?.data.stats.all.overall}/>
-            <h2 className='stat-type'>Solo</h2>
-            <Stats name="Solo" data={apiData?.data.stats.all.solo}/>
-
-
-
-
+            <Stats name="Overall" data={apiData?.data.stats.all.overall} />
             
+            <h2 className='stat-type'>Solo</h2>
+            <Stats name="Solo" data={apiData?.data.stats.all.solo} />
+
+            <h2 className='stat-type'>Duo's</h2>
+            <Stats name="Solo" data={apiData?.data.stats.all.duo} />
+
+            <h2 className='stat-type'>Squad</h2>
+            <Stats name="Solo" data={apiData?.data.stats.all.squad} />
+
+  
+
+
             {/* <p>Deaths: {apiData?.data.stats.all.solo.deaths}</p>
             <p>Kills: {apiData?.data.stats.all.solo.kills}</p>
             <p>KillDeath Ratio: {apiData?.data.stats.all.solo.kd}</p> */}
