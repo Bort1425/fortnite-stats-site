@@ -43,6 +43,75 @@ function Stats(props: StatsProps) {
   )
 }
 
+function Results(props){
+
+  //if we dont get anything say to enter something
+  if(props.apiData == null){
+    return (
+      <>
+      <p>Please Enter Your Fortnite UserName</p>
+      </>
+    )
+
+  }else if(props.apiData.status == 200){
+    return (
+      <>
+       <div>
+        <section>
+          <img src='' alt=''></img>
+          <div className='stats-table'>
+
+            <h1 className='stats-table-header'>{props.apiData?.data.account.name} Level: {props.apiData?.data.battlePass.level}</h1>
+
+            <h2 className='stat-type-overall'>Overall</h2>
+            <Stats name="Overall" data={props.apiData?.data.stats.all.overall} />
+            
+            <h2 className='stat-type'>Solo</h2>
+            <Stats name="Solo" data={props.apiData?.data.stats.all.solo} />
+
+            <h2 className='stat-type'>Duo's</h2>
+            <Stats name="Solo" data={props.apiData?.data.stats.all.duo} />
+
+            <h2 className='stat-type'>Squad</h2>
+            <Stats name="Solo" data={props.apiData?.data.stats.all.squad} />
+
+            {/* <p>Deaths: {apiData?.data.stats.all.solo.deaths}</p>
+            <p>Kills: {apiData?.data.stats.all.solo.kills}</p>
+            <p>KillDeath Ratio: {apiData?.data.stats.all.solo.kd}</p> */}
+
+            {/*This will be where the table goes for the stats*/}
+            {/*
+          <table>
+            <tr>
+              <td></td>
+              <td></td>
+            </tr>
+          </table>
+          */}
+          </div>
+
+          <img src='' alt=''></img>
+        </section>
+      </div>
+      
+      </>
+    )
+
+  }else if(props.apiData.status == 403){
+    return (
+    <>
+    <h1>Nah...We can't show you those stats. Try again :D ???</h1>
+    </>)
+  }else if(props.apiData.status == 404){
+    return (
+    <>
+    <h1>Hey. The person you're looking for is so sweaty they don't even exist. Enter another username Champ. </h1>
+    </>
+    )
+  }
+  
+}
+
 function App() {
   const [apiData, setApiData] = useState(null); /*Okay so, what I think is 
   going on here is that the first thing in the square brackets defines a variable and then the second thing is a sort of updater method
@@ -72,12 +141,11 @@ function App() {
     let response = await fetch("https://fortnite-api.com/v2/stats/br/v2?name=" + gamerTag, { //fetch makes request to url to get the data
       headers: {
         Authorization: import.meta.env.VITE_API_KEY //The authorization header is needed in order to have access to the api data. And by authorization i mean you need the API KEY to get access to the data
-      }
+      } 
     })
     let data = await response.json();
     console.log(data);
     setApiData(data);
-
   }
 
   //Function that handles the username submittion form
@@ -87,7 +155,6 @@ function App() {
     const data = new FormData(submitEvent.currentTarget)//FormData is an object that takes in a formElement aka the submitEvent's current target
     let gamerTag = data.get('gamer-tag'); //look for an input with name of gamer tag
     console.log(gamerTag);
-
 
     if ((gamerTag == null) || (gamerTag == undefined)) {
       return 0;
@@ -107,46 +174,7 @@ function App() {
         <button type='submit'>Smash that submit button!</button>
       </form>
 
-      {apiData != null && <div>
-        <section>
-          <img src='' alt=''></img>
-          <div className='stats-table'>
-
-            <h1 className='stats-table-header'>{apiData?.data.account.name} Level: {apiData?.data.battlePass.level}</h1>
-
-            <h2 className='stat-type-overall'>Overall</h2>
-            <Stats name="Overall" data={apiData?.data.stats.all.overall} />
-            
-            <h2 className='stat-type'>Solo</h2>
-            <Stats name="Solo" data={apiData?.data.stats.all.solo} />
-
-            <h2 className='stat-type'>Duo's</h2>
-            <Stats name="Solo" data={apiData?.data.stats.all.duo} />
-
-            <h2 className='stat-type'>Squad</h2>
-            <Stats name="Solo" data={apiData?.data.stats.all.squad} />
-
-  
-
-
-            {/* <p>Deaths: {apiData?.data.stats.all.solo.deaths}</p>
-            <p>Kills: {apiData?.data.stats.all.solo.kills}</p>
-            <p>KillDeath Ratio: {apiData?.data.stats.all.solo.kd}</p> */}
-
-            {/*This will be where the table goes for the stats*/}
-            {/*
-          <table>
-            <tr>
-              <td></td>
-              <td></td>
-            </tr>
-          </table>
-          */}
-          </div>
-
-          <img src='' alt=''></img>
-        </section>
-      </div>}
+      <Results apiData={apiData}/> //results will take in apidata for the function
 
       <footer>
 
